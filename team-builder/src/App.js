@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './App.css';
 // import FriendsForm from './FriendsForm'
 import styled from 'styled-components'
+import List from './listcomponent'
 
 const AppBox = styled.div`
   color: #61dafb;
@@ -43,33 +44,53 @@ const FormDiv = styled.div`
     border-radius: 4px;
   }
 `
+const ListDiv = styled.div`
+// border: 1px solid white;
+display: flex;
+flex-flow: column nowrap;
+align-items: center;
+width: 100%;
+height: auto;
+`
 function App() {
   const initialForm = {fname: '', lname: '', email: ''}
 
   // const {teamList, setTeamList} = useState ([])
-  const [formData, setFormData] = useState(initialForm)
+  const [formInput, setFormInput] = useState(initialForm)
+  const [arrayList, setArrayList] = useState([])
 
   const formChanges = event => {
     // debugger
-    setFormData({
-      ...formData,
+    setFormInput({
+      ...formInput,
       [event.target.name]: event.target.value
     })
   }
+  const submit = (event) => {
+    event.preventDefault();
+    arrayList.unshift({fname: formInput.fname, lname: formInput.lname, email: formInput.email});
+    console.log(arrayList);
+    setFormInput(initialForm);
+  }
 
- 
   return (
     <AppBox>
-    
     <FormDiv>
-      <form>
+      <form onSubmit={submit}>
       <h1>Check-in</h1>
-        <input classList ='input' type='text' placeholder='First Name' name='fname' onChange={formChanges}></input>
-        <input classList ='input' type='text' placeholder='Last Name' name='lname' onChange={formChanges}></input>
-        <input classList ='input' type='text' placeholder='Email' name='email' onChange={formChanges}></input>
+        <input type='text' value={formInput.fname} placeholder='First Name' name='fname' onChange={formChanges}></input>
+        <input type='text' value={formInput.lname} placeholder='Last Name' name='lname' onChange={formChanges}></input>
+        <input type='text' value={formInput.email} placeholder='Email' name='email' onChange={formChanges}></input>
         <button>Submit</button>
       </form>
     </FormDiv>
+    <ListDiv>
+      {arrayList==false ? 'Join the waitlist!' :
+      arrayList.map(obj=>{
+        return(
+          <List obj={obj}/>
+        )})}
+    </ListDiv>
     </AppBox>
   );
 }

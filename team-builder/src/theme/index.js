@@ -1,3 +1,3 @@
-export default {
-    bgColor: '#282c34',
-}
+const theme = {}    
+
+export {theme}
